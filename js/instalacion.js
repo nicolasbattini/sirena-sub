@@ -1,7 +1,7 @@
 // SIRENA Sub · versión y funcionamiento sin conexión (service worker)
 // Cambiá APP_VERSION en cada publicación: también figura en sw.js.
 
-const APP_VERSION = '4.0.0';
+const APP_VERSION = '4.1.0';
 document.getElementById('appVersion').textContent = 'v' + APP_VERSION;
 
 // El service worker solo funciona servido por http(s) (GitHub Pages); al abrir el archivo con doble clic se omite.

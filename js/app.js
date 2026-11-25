@@ -165,19 +165,17 @@ function zoomCentro(f) {
 document.getElementById('zoomInBtn').onclick = () => zoomCentro(1.2);
 document.getElementById('zoomOutBtn').onclick = () => zoomCentro(1/1.2);
 document.getElementById('resetViewBtn').onclick = resetView;
-document.getElementById('toggleLinesBtn').onclick = () => { showLines = !showLines; draw(); saveToLocalStorage(true); setStatus(showLines ? 'Líneas de construcción visibles' : 'Líneas de construcción ocultas'); };
+document.getElementById('toggleLinesBtn').onclick = () => { showLines = !showLines; draw(); saveToLocalStorage(true, false); setStatus(showLines ? 'Líneas de construcción visibles' : 'Líneas de construcción ocultas'); };
 document.getElementById('exportCsvBtn').onclick = exportCSV;
 document.getElementById('exportKmlBtn').onclick = exportKML;
 document.getElementById('exportGeoJsonBtn').onclick = exportGeoJSON;
 document.getElementById('exportJpgBtn').onclick = exportJPG;
-document.getElementById('exportBackupBtn').onclick = exportBackup;
-document.getElementById('importBackupBtn').onclick = () => { document.getElementById('backupFile').click(); };
-document.getElementById('backupFile').onchange = (e) => { if(e.target.files.length) importBackup(e.target.files[0]); e.target.value = ''; };
-document.getElementById('clearAllBtn').onclick = clearAll;
 window.addEventListener('resize', () => draw());
 
 function toggleCard(id) { document.getElementById(id)?.classList.toggle('collapsed'); }
 // E14: solo JS, sin inline
 document.getElementById('sidebarToggle').onclick = () => document.getElementById('mainSidebar').classList.toggle('open');
+// En pantallas angostas, tocar el mapa cierra el panel lateral
+canvas.addEventListener('pointerdown', () => document.getElementById('mainSidebar').classList.remove('open'));
 
-loadFromLocalStorage().then(() => { draw(); resetView(); });
+loadFromLocalStorage().then(restaurarArchivo).then(() => { draw(); resetView(); });

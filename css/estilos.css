@@ -5,7 +5,7 @@
         background: #f0f2f5; height: 100vh; overflow: hidden;
         font-size: 13px; display: flex; flex-direction: column;
     }
-    .app { display: flex; flex: 1; overflow: hidden; }
+    .app { display: flex; flex: 1; overflow: hidden; position: relative; }
     .sidebar {
         width: 340px; min-width: 260px; background: #ffffff;
         border-right: 1px solid #ddd; display: flex; flex-direction: column;
@@ -17,6 +17,20 @@
         display: flex; align-items: center; justify-content: space-between;
         padding: 8px 10px; background: #ffffff; color: #2c3e50; gap: 8px;
         flex-shrink: 0; border-bottom: 1px solid #ddd;
+    }
+    .app-title { font-weight: 700; font-size: 1rem; white-space: nowrap; }
+    .archivo-actual {
+        font-size: 0.75rem; font-weight: 600; color: #2c3e50; max-width: 220px;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .archivo-actual.sin-guardar { color: #d35400; }
+    .header-btns { display: flex; gap: 4px; flex-shrink: 0; }
+    .header-btns button { white-space: nowrap; }
+    @media (max-width: 900px) { .header-btns .lbl { display: none; } }
+    @media (max-width: 520px) {
+        .app-title { display: none; }
+        .archivo-actual { max-width: 110px; }
+        .app-header { gap: 5px; padding: 6px; }
     }
     .app-header h1 { font-size: 1.05rem; font-weight: 600; margin: 0; white-space: nowrap; color: #2c3e50; }
     .app-header .status-bar {
@@ -115,9 +129,11 @@
     }
     .btn-group { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 6px; }
     .btn-group button { flex: 1; min-width: 80px; }
+    #sidebarToggle { display: none; }
     @media (max-width: 700px) {
         .sidebar {
             position: absolute; left: 0; top: 0; bottom: 0; z-index: 15;
+            width: min(85vw, 340px); min-width: 0;
             transform: translateX(-100%); transition: transform 0.25s;
             box-shadow: 4px 0 16px rgba(0,0,0,0.15);
         }
@@ -127,5 +143,5 @@
             background: rgba(255,255,255,0.92); border: 1px solid #ddd;
             border-radius: 8px; padding: 6px 10px; cursor: pointer;
         }
+        .sidebar.open + .map-area #sidebarToggle { left: calc(min(85vw, 340px) + 6px); }
     }
-    #sidebarToggle { display: none; }

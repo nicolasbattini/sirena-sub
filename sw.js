@@ -1,7 +1,7 @@
 // SIRENA Sub · service worker
 // Guarda la app en el dispositivo para que funcione sin conexión.
 // IMPORTANTE: al publicar cambios, subí el número de versión (y el de js/instalacion.js).
-const VERSION = '4.0.0';
+const VERSION = '4.1.0';
 const CACHE = 'sirena-sub-' + VERSION;
 const ARCHIVOS = [
     './',
@@ -12,6 +12,7 @@ const ARCHIVOS = [
     './js/geometria.js',
     './js/mapa.js',
     './js/datos.js',
+    './js/proyecto.js',
     './js/app.js',
     './js/instalacion.js',
     './icons/icon-192.png',

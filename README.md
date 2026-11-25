@@ -15,8 +15,17 @@ Autor original: Guillermo Gutiérrez (IDEAus-CONICET).
    iPhone/iPad: botón Compartir → **Agregar a inicio**.
 3. Abrila una vez desde el ícono. A partir de ahí funciona **sin conexión**.
 
-Los datos se guardan en cada dispositivo (no se suben a ningún servidor).
-Para pasarlos a otro equipo o guardarlos de forma segura: **Exportar datos → 📦 Respaldo JSON**.
+Los datos se guardan solos en el navegador de cada dispositivo (no se suben a ningún servidor).
+
+## Proyectos
+
+- **📄 Nuevo**, **📂 Abrir**, **💾 Guardar** y **📑 Guardar como** trabajan con archivos de proyecto (`.sirena.json`)
+  que contienen todo: puntos, mediciones de red, declinación y la FUR.
+- En **Chrome o Edge de computadora**, *Guardar* escribe sobre el mismo archivo (atajos Ctrl+S / Ctrl+O).
+- En **tablets, celulares, Firefox y Safari**, *Guardar* descarga el archivo a la carpeta de Descargas.
+- El nombre del proyecto aparece arriba; un **●** naranja indica cambios que todavía no están en el archivo
+  (aunque sí están a salvo en el navegador).
+- Abre también los archivos "Respaldo JSON" de versiones anteriores.
 
 Cuando se publica una versión nueva, la app lo avisa en la barra de estado: tocando el aviso se actualiza.
 
@@ -41,7 +50,8 @@ css/estilos.css       estilos
 js/estado.js          variables globales (se carga primero)
 js/geometria.js       cálculos de posición, trilateración, álgebra lineal (sin DOM)
 js/mapa.js            dibujo del mapa, zoom, paneo, selección
-js/datos.js           listas, guardado, red de CPs, exportaciones, FUR
+js/datos.js           listas, guardado en el navegador, red de CPs, exportaciones, FUR
+js/proyecto.js        archivos de proyecto: nuevo, abrir, guardar, guardar como
 js/app.js             formularios por método, alta de puntos, inicio
 js/instalacion.js     versión y registro del service worker
 sw.js                 guarda la app para uso sin conexión

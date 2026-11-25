@@ -115,8 +115,8 @@ const AppDB = (function(){
     const DB_NAME='AcruxSubData', DB_VERSION=1, STORE='state', KEY='main';
     let _db=null;
     function open(){ return new Promise((res,rej)=>{ if(_db) return res(_db); const req=indexedDB.open(DB_NAME,DB_VERSION); req.onupgradeneeded=e=>{ if(!e.target.result.objectStoreNames.contains(STORE)) e.target.result.createObjectStore(STORE,{keyPath:'id'}); }; req.onsuccess=e=>{ _db=e.target.result; res(_db); }; req.onerror=e=>rej(e.target.error); }); }
-    async function get(){ try{ const db=await open(); return new Promise((res)=>{ const tx=db.transaction(STORE,'readonly'); tx.objectStore(STORE).get(KEY).onsuccess=e=>res(e.target.result?.data); }); }catch(e){ return null; } }
-    async function set(data){ try{ const db=await open(); return new Promise((res)=>{ const tx=db.transaction(STORE,'readwrite'); tx.objectStore(STORE).put({id:KEY,data}).onsuccess=()=>res(true); }); }catch(e){ return false; } }
+    async function get(key=KEY){ try{ const db=await open(); return new Promise((res)=>{ const tx=db.transaction(STORE,'readonly'); tx.objectStore(STORE).get(key).onsuccess=e=>res(e.target.result?.data); }); }catch(e){ return null; } }
+    async function set(data, key=KEY){ try{ const db=await open(); return new Promise((res)=>{ const tx=db.transaction(STORE,'readwrite'); try { const rq=tx.objectStore(STORE).put({id:key,data}); rq.onsuccess=()=>res(true); rq.onerror=()=>res(false); } catch(_) { res(false); } }); }catch(e){ return false; } }
     return {get,set};
 })();
 
@@ -126,9 +126,11 @@ function getState() {
         siteName: document.getElementById('siteName').value, siteCode: document.getElementById('siteCode').value,
         declinacion: document.getElementById('declinacion').value, furData, redMediciones };
 }
-async function saveToLocalStorage(silent=false) {
+// Guarda el estado en el navegador (siempre). marcar=true indica que hubo un cambio que aún no está en el archivo del proyecto.
+async function saveToLocalStorage(silent=false, marcar=true) {
+    if(marcar && typeof marcarCambios === 'function') marcarCambios();
     await AppDB.set(getState());
-    if(!silent) setStatus('Guardado automático');
+    if(!silent) setStatus('Cambios guardados en el navegador');
 }
 // v4: migración de datos de versiones anteriores. Devuelve un aviso o ''.
 function migrateData(d) {
@@ -435,43 +437,6 @@ function exportJPG() {
     a.download = `${siteName.replace(/[^\w\-]+/g,'_')}_${fecha}.jpg`;
     a.click();
     setStatus('JPG exportado');
-}
-
-function exportBackup() {
-    const sitio = (document.getElementById('siteName').value || 'sitio').replace(/[^\w\-]+/g,'_');
-    download(JSON.stringify(getState(), null, 2), `respaldo_sirenasub_${sitio}_${new Date().toISOString().slice(0,10)}.json`, 'application/json');
-    setStatus('Respaldo JSON exportado');
-}
-function importBackup(file) {
-    const reader = new FileReader();
-    reader.onload = e => {
-        try {
-            const d = JSON.parse(e.target.result);
-            // E9: validación de estructura
-            if(!d || typeof d !== 'object' || !Array.isArray(d.cps) || !Array.isArray(d.pts)) {
-                setStatus('Respaldo inválido: estructura incorrecta', true);
-                return;
-            }
-            if(!confirm('¿Reemplazar los datos actuales por los del respaldo?')) return;
-            const aviso = migrateData(d);
-            applyState(d);
-            saveToLocalStorage(true);
-            if(aviso) { setStatus('Respaldo importado · ' + aviso, true); return; }
-            setStatus('Respaldo importado');
-        } catch(ex) { setStatus('Error al importar: '+ex.message, true); }
-    };
-    reader.readAsText(file);
-}
-function clearAll() {
-    if(confirm('¿Eliminar TODOS los datos?')) {
-        cps = []; pts = []; geoOrigin = null; redMediciones = []; furData = {}; _preAjuste = null;
-        document.getElementById('deshacerAjusteBtn').style.display = 'none';
-        const resDiv = document.getElementById('residuosDiv');
-        if(resDiv) { resDiv.innerHTML = ''; resDiv.style.display = 'none'; }
-        _selectedPoint = null;
-        renderAll(); saveToLocalStorage(true);
-        setStatus('Datos eliminados');
-    }
 }
 
 // ==================== 10. FUR ====================

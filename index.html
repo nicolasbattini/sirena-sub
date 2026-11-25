@@ -16,9 +16,17 @@
 <body>
 <div style="display: flex; flex-direction: column; height: 100%;">
     <div class="app-header">
-        <span style="font-weight:700; font-size:1rem;">SIRENA Sub (Campo)</span>
-        <div class="status-bar" id="statusMsg">Listo · guardado automático</div>
-        <button id="openFurBtn" class="btn-primary" style="white-space:nowrap;">📋 FUR</button>
+        <span class="app-title">SIRENA Sub</span>
+        <span id="archivoActual" class="archivo-actual">Sin título</span>
+        <div class="status-bar" id="statusMsg">Listo</div>
+        <div class="header-btns">
+            <button id="nuevoBtn" title="Proyecto nuevo">📄<span class="lbl"> Nuevo</span></button>
+            <button id="abrirBtn" title="Abrir proyecto (Ctrl+O)">📂<span class="lbl"> Abrir</span></button>
+            <button id="guardarBtn" class="btn-primary" title="Guardar (Ctrl+S)">💾<span class="lbl"> Guardar</span></button>
+            <button id="guardarComoBtn" title="Guardar como… (Ctrl+Shift+S)">📑<span class="lbl"> Guardar como</span></button>
+            <button id="openFurBtn" class="btn-primary" title="Ficha Única de Registro">📋<span class="lbl"> FUR</span></button>
+        </div>
+        <input type="file" id="abrirArchivo" accept=".json,application/json" style="display:none">
     </div>
     <div class="app">
         <div class="sidebar" id="mainSidebar">
@@ -64,7 +72,7 @@
                 <div class="card-body"><div id="cpList" class="list"></div></div>
             </div>
             <div class="card" id="card-pts">
-                <div class="card-header" onclick="toggleCard('card-pts')">🔍 Hallazgos (<span id="ptCount">0</span>) <span class="card-toggle">▾</span></div>
+                <div class="card-header" onclick="toggleCard('card-pts')"><span>🔍 Hallazgos (<span id="ptCount">0</span>)</span> <span class="card-toggle">▾</span></div>
                 <div class="card-body"><div id="ptList" class="list"></div></div>
             </div>
             <div class="card collapsed" id="card-buscar">
@@ -96,12 +104,7 @@
                         <button id="exportGeoJsonBtn" class="btn-export">🗺️ GeoJSON</button>
                         <button id="exportJpgBtn" class="btn-export">🖼️ JPG</button>
                     </div>
-                    <div class="btn-group">
-                        <button id="exportBackupBtn" class="btn-export">📦 Respaldo JSON</button>
-                        <button id="importBackupBtn" class="btn-primary">📂 Importar respaldo</button>
-                        <button id="clearAllBtn" class="btn-danger">🗑 Limpiar todo</button>
-                    </div>
-                    <input type="file" id="backupFile" accept=".json" style="display:none">
+                    <div style="font-size:0.65rem; color:#6c757d;">Para guardar o compartir el proyecto completo usá 💾 Guardar (arriba).</div>
                 </div>
             </div>
         </div>
@@ -170,6 +173,7 @@
 <script src="js/geometria.js"></script>
 <script src="js/mapa.js"></script>
 <script src="js/datos.js"></script>
+<script src="js/proyecto.js"></script>
 <script src="js/app.js"></script>
 <script src="js/instalacion.js"></script>
 </body>
